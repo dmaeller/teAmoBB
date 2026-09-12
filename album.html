@@ -1,0 +1,439 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="robots" content="noindex, nofollow">
+    <title>Nosso Álbum de Memórias ❤️</title>
+
+    <!-- Tipografia Editorial do Projeto -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link
+        href="https://fonts.googleapis.com/css2?family=Caveat:wght@600&family=Playfair+Display:ital,wght@0,600;0,700;1,400&family=Plus+Jakarta+Sans:wght@400;500;600&display=swap"
+        rel="stylesheet">
+
+    <style>
+        :root {
+            --bg-color: #FBF8F5;
+            --card-bg: #FFFFFF;
+            --primary: #5C061C;
+            --primary-light: #8E1631;
+            --accent-gold: #C5A059;
+            --text-main: #2C2224;
+            --text-muted: #7A6B6E;
+            --shadow-soft: 0 10px 30px -5px rgba(92, 6, 28, 0.08);
+            --shadow-hover: 0 20px 40px -10px rgba(92, 6, 28, 0.22);
+        }
+
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+        }
+
+        body {
+            font-family: 'Plus Jakarta Sans', sans-serif;
+            background-color: var(--bg-color);
+            color: var(--text-main);
+            padding: 30px 15px 100px;
+            min-height: 100vh;
+            background-image: radial-gradient(rgba(197, 160, 89, 0.12) 1px, transparent 1px);
+            background-size: 24px 24px;
+        }
+
+        /* Player Flutuante de Música */
+        .music-player {
+            position: fixed;
+            top: 15px;
+            right: 15px;
+            background: rgba(255, 255, 255, 0.85);
+            backdrop-filter: blur(12px);
+            border: 1px solid rgba(197, 160, 89, 0.3);
+            padding: 8px 14px;
+            border-radius: 30px;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            z-index: 99;
+            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.05);
+            cursor: pointer;
+        }
+
+        .music-btn {
+            width: 28px;
+            height: 28px;
+            border-radius: 50%;
+            background: var(--primary);
+            color: #fff;
+            border: none;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 0.7rem;
+        }
+
+        .music-info {
+            font-size: 0.75rem;
+            font-weight: 600;
+            color: var(--primary);
+        }
+
+        /* Cabeçalho */
+        header {
+            text-align: center;
+            max-width: 600px;
+            margin: 20px auto 50px;
+        }
+
+        .navbar {
+            display: inline-flex;
+            background: rgba(255, 255, 255, 0.7);
+            padding: 4px;
+            border-radius: 30px;
+            border: 1px solid rgba(197, 160, 89, 0.25);
+            margin-bottom: 25px;
+            backdrop-filter: blur(8px);
+        }
+
+        .nav-link {
+            padding: 8px 22px;
+            border-radius: 20px;
+            text-decoration: none;
+            font-size: 0.85rem;
+            font-weight: 600;
+            color: var(--text-muted);
+            transition: all 0.3s ease;
+        }
+
+        .nav-link.active {
+            background: var(--primary);
+            color: #FFF;
+            box-shadow: 0 4px 12px rgba(92, 6, 28, 0.25);
+        }
+
+        header h1 {
+            font-family: 'Playfair Display', serif;
+            font-size: 2.6rem;
+            font-weight: 700;
+            color: var(--primary);
+            letter-spacing: -0.5px;
+            margin-bottom: 10px;
+        }
+
+        header p {
+            font-size: 0.95rem;
+            color: var(--text-muted);
+        }
+
+        /* Grid do Álbum */
+        .album-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(260px, 1fr));
+            gap: 35px 25px;
+            max-width: 1000px;
+            margin: 0 auto;
+            padding: 10px;
+        }
+
+        /* Card Estilo Polaroid Vintage */
+        .photo-card {
+            background: #FFFFFF;
+            padding: 14px 14px 22px 14px;
+            border-radius: 4px;
+            box-shadow: var(--shadow-soft);
+            border: 1px solid rgba(197, 160, 89, 0.25);
+            cursor: pointer;
+            position: relative;
+            transition: all 0.35s cubic-bezier(0.25, 1, 0.5, 1);
+            display: flex;
+            flex-direction: column;
+        }
+
+        /* Inclinações alternadas para parecerem jogadas na mesa */
+        .photo-card:nth-child(odd) {
+            transform: rotate(-2deg);
+        }
+
+        .photo-card:nth-child(even) {
+            transform: rotate(2deg);
+        }
+
+        .photo-card:nth-child(3n) {
+            transform: rotate(-1deg);
+        }
+
+        /* Fita Adesiva Transparente (Washi Tape) */
+        .photo-card::before {
+            content: "";
+            position: absolute;
+            top: -12px;
+            left: 50%;
+            transform: translateX(-50%) rotate(-1deg);
+            width: 75px;
+            height: 22px;
+            background: rgba(255, 255, 255, 0.65);
+            border: 1px solid rgba(197, 160, 89, 0.2);
+            backdrop-filter: blur(3px);
+            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.03);
+            z-index: 2;
+        }
+
+        .photo-card:hover {
+            transform: translateY(-12px) rotate(0deg) scale(1.03) !important;
+            z-index: 99 !important;
+            box-shadow: var(--shadow-hover);
+            border-color: var(--accent-gold);
+        }
+
+        .photo-wrapper {
+            width: 100%;
+            height: 250px;
+            overflow: hidden;
+            background-color: #F4EFEA;
+            border-radius: 2px;
+        }
+
+        .photo-wrapper img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            transition: transform 0.5s ease;
+        }
+
+        .photo-card:hover .photo-wrapper img {
+            transform: scale(1.06);
+        }
+
+        .photo-info {
+            padding-top: 14px;
+            text-align: center;
+        }
+
+        .photo-date {
+            font-size: 0.7rem;
+            text-transform: uppercase;
+            letter-spacing: 1.5px;
+            color: var(--accent-gold);
+            font-weight: 600;
+            margin-bottom: 4px;
+        }
+
+        .photo-caption {
+            font-family: 'Caveat', cursive;
+            font-size: 1.45rem;
+            color: var(--primary);
+            line-height: 1.2;
+        }
+
+        /* Modal Lightbox */
+        .lightbox-overlay {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(30, 15, 20, 0.75);
+            backdrop-filter: blur(8px);
+            display: none;
+            justify-content: center;
+            align-items: center;
+            padding: 20px;
+            z-index: 10000;
+        }
+
+        .lightbox-content {
+            background: #FFFDFB;
+            border-radius: 20px;
+            max-width: 620px;
+            width: 100%;
+            overflow: hidden;
+            box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.4);
+            position: relative;
+            border: 1px solid var(--accent-gold);
+            animation: modalUp 0.35s cubic-bezier(0.16, 1, 0.3, 1);
+        }
+
+        @keyframes modalUp {
+            from {
+                opacity: 0;
+                transform: translateY(20px) scale(0.95);
+            }
+
+            to {
+                opacity: 1;
+                transform: translateY(0) scale(1);
+            }
+        }
+
+        .lightbox-img {
+            width: 100%;
+            max-height: 62vh;
+            object-fit: contain;
+            background-color: #1A1213;
+            display: block;
+        }
+
+        .lightbox-info {
+            padding: 25px;
+            border-top: 1px solid rgba(197, 160, 89, 0.2);
+        }
+
+        .lightbox-date {
+            font-size: 0.75rem;
+            text-transform: uppercase;
+            letter-spacing: 2px;
+            color: var(--accent-gold);
+            font-weight: 600;
+            margin-bottom: 6px;
+        }
+
+        .lightbox-caption {
+            font-family: 'Playfair Display', serif;
+            font-size: 1.2rem;
+            line-height: 1.5;
+            color: var(--text-main);
+        }
+
+        .close-btn {
+            position: absolute;
+            top: 15px;
+            right: 15px;
+            width: 36px;
+            height: 36px;
+            border-radius: 50%;
+            border: none;
+            background: rgba(0, 0, 0, 0.5);
+            color: #FFF;
+            cursor: pointer;
+            font-size: 1.3rem;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            z-index: 10;
+            transition: background 0.2s ease;
+        }
+
+        .close-btn:hover {
+            background: var(--primary);
+        }
+    </style>
+</head>
+
+<body>
+
+    <!-- Trilha Sonora do Casal -->
+    <div class="music-player" onclick="toggleAudio()">
+        <button class="music-btn" id="musicBtn">▶</button>
+        <span class="music-info" id="musicTitle">Nossa Música 🎵</span>
+        <audio id="bgAudio" loop src="https://www.soundhelix.com/examples/mp3/SoundHelix-Song-1.mp3"></audio>
+    </div>
+
+    <header>
+        <nav class="navbar">
+            <a href="index.html" class="nav-link">✉️ Motivos</a>
+            <a href="album.html" class="nav-link active">📸 Memórias</a>
+            <a href="ranking.html" class="nav-link">💩 Ranking</a>
+        </nav>
+
+        <h1>Nosso Álbum de Memórias</h1>
+        <p>Registros dos nossos melhores momentos ao longo desses 3 anos.</p>
+    </header>
+
+    <main class="album-grid" id="albumGrid"></main>
+
+    <!-- Modal Lightbox -->
+    <div class="lightbox-overlay" id="lightbox">
+        <div class="lightbox-content">
+            <button class="close-btn" onclick="fecharFoto()">&times;</button>
+            <img src="" alt="Foto expandida" class="lightbox-img" id="lightboxImg">
+            <div class="lightbox-info">
+                <div class="lightbox-date" id="lightboxDate"></div>
+                <div class="lightbox-caption" id="lightboxCaption"></div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        // -------------------------------------------------------------
+        // CADASTRO DE FOTOS E LEGENDAS
+        // Crie uma pasta 'fotos' no GitHub e adicione suas imagens!
+        // -------------------------------------------------------------
+        const fotos = [
+            {
+                url: "fotos/fotinha1.jpeg", // Substitua por "fotos/foto1.jpg"
+                data: "22 de Setembro de 2023",
+                legenda: "Uma fotinha do meu primeiro aniversário com vc, dia bom."
+            },
+            {
+                url: "fotos/fotinha2.jpeg",
+                data: "???",
+                legenda: "Não descobri o dia, mas vc tava tão linda que decidi manter"
+            },
+            {
+                url: "fotos/fotinha3.jpeg",
+                data: "24 de Dezembro de 2023",
+                legenda: "Nosso primeiro natal juntos hehe"
+            },
+            {
+                url: "fotos/fotinha4.jpeg",
+                data: "???",
+                legenda: "O dia que eu conheci a família do seu pai direito, também não descobri a data :("
+            }
+        ];
+
+        const albumGrid = document.getElementById('albumGrid');
+
+        fotos.forEach(foto => {
+            const card = document.createElement('div');
+            card.className = 'photo-card';
+            card.onclick = () => abrirFoto(foto.url, foto.data, foto.legenda);
+
+            card.innerHTML = `
+        <div class="photo-wrapper">
+          <img src="${foto.url}" alt="Foto" loading="lazy">
+        </div>
+        <div class="photo-info">
+          <div class="photo-date">${foto.data}</div>
+          <div class="photo-caption">${foto.legenda}</div>
+        </div>
+      `;
+
+            albumGrid.appendChild(card);
+        });
+
+        function abrirFoto(url, data, legenda) {
+            document.getElementById('lightboxImg').src = url;
+            document.getElementById('lightboxDate').innerText = data;
+            document.getElementById('lightboxCaption').innerText = legenda;
+            document.getElementById('lightbox').style.display = 'flex';
+        }
+
+        function fecharFoto() {
+            document.getElementById('lightbox').style.display = 'none';
+        }
+
+        window.onclick = function (event) {
+            const lightbox = document.getElementById('lightbox');
+            if (event.target === lightbox) {
+                fecharFoto();
+            }
+        }
+
+        // Controle de Áudio
+        function toggleAudio() {
+            const audio = document.getElementById('bgAudio');
+            const btn = document.getElementById('musicBtn');
+            if (audio.paused) {
+                audio.play();
+                btn.innerText = "❚❚";
+            } else {
+                audio.pause();
+                btn.innerText = "▶";
+            }
+        }
+    </script>
+</body>
+
+</html>
