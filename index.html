@@ -415,7 +415,7 @@
       const cartaExistente = cartas.find(c => c.dia === i);
 
       const titulo = cartaExistente ? cartaExistente.titulo : `Motivo #${i}`;
-      const texto = cartaExistente ? cartaExistente.texto : `Escreva aqui o motivo número ${i}...`;
+      const texto = cartaExistente ? cartaExistente.texto : `???`;
 
       const card = document.createElement('div');
       card.className = `card ${estaLiberado ? 'unlocked' : 'locked'}`;
